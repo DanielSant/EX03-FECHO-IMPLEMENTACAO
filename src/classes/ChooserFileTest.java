@@ -18,6 +18,11 @@ public class ChooserFileTest
 		ArquivoDismember arq = new ArquivoDismember();
 		arq.readAndLoadXML(application.getFile());
 		
+		System.out.printf("%n%s%n", "Abrir arquivo 2");
+		ChooserFile app = new ChooserFile();
+		ArquivoDismember arq1 = new ArquivoDismember();
+		arq1.readAndLoadXML(app.getFile());
+		
 		/*AbrirArquivo arq1 = new AbrirArquivo();
 		arq1.openFile(application.getFile().toString());
 		arq1.readFile();

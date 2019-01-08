@@ -1,7 +1,6 @@
 package classes;
 
-import java.nio.file.Path;
-
+import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
@@ -13,7 +12,7 @@ public class ChooserFile extends JFrame
 	private static final long serialVersionUID = 1L;
 
 	// permite que o usuário especifique o nome de arquivo ou diretório
-	protected Path getFilePath()
+	protected File getFile()
 	{
 		// configura o diálogo permitindo a seleção de um arquivo
 		JFileChooser arquivoEscolhido = new JFileChooser();
@@ -24,7 +23,7 @@ public class ChooserFile extends JFrame
 		if (result == JFileChooser.CANCEL_OPTION)
 			System.exit(1);
 
-		// retorna o Path representando o arquivo selecionado
-		return arquivoEscolhido.getSelectedFile().toPath();
+		// retorna o File representando o arquivo selecionado
+		return arquivoEscolhido.getSelectedFile();
 	}
 } // fim da classe ChooserFile

@@ -2,7 +2,7 @@ package classes;
 
 import java.util.ArrayList;
 
-public class automatonDados
+public class AutomatonDados
 {
 	// atributos
 	ArrayList<Estado> estado = new ArrayList<>(); // objetos da classe Estado

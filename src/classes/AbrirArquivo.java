@@ -49,7 +49,7 @@ public class AbrirArquivo
 			System.exit(1);
 		}
 	} // fim do método readFile
-
+	
 	// fecha o arquivo e termina o aplicativo
 	protected void closeFile()
 	{

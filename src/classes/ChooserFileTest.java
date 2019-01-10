@@ -13,15 +13,29 @@ public class ChooserFileTest
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException
 	{
 		// TODO Auto-generated method stub
-		System.out.printf("%n%s%n", "Abrir arquivo 1");
+		System.out.printf("%n%s%n", "Abrir o 1º arquivo");
 		ChooserFile application = new ChooserFile();
 		ArquivoDismember arq = new ArquivoDismember();
-		arq.readAndLoadXML(application.getFile());
+		AutomatonDados auto = new AutomatonDados();
+		arq.readAndLoadXML(application.getFile(), auto);
 		
-		System.out.printf("%n%s%n", "Abrir arquivo 2");
+		for (Estado est : auto.getEstado())
+		{
+			System.out.println(est.getNome());
+		}
+		
+		System.out.printf("%n%s%n", "Abrir o 2º arquivo");
 		ChooserFile app = new ChooserFile();
 		ArquivoDismember arq1 = new ArquivoDismember();
-		arq1.readAndLoadXML(app.getFile());
+		AutomatonDados auto1 = new AutomatonDados();
+		arq1.readAndLoadXML(app.getFile(), auto1);
+		
+		int qtdEstados2 = auto1.getEstado().size();
+		
+		for (int i = 0; i < qtdEstados2; i++)
+		{
+			System.out.println(auto1.getEstado().get(i));
+		}
 		
 		/*AbrirArquivo arq1 = new AbrirArquivo();
 		arq1.openFile(application.getFile().toString());

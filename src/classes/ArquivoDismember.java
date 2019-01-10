@@ -16,13 +16,33 @@ import org.xml.sax.SAXException;
 
 public class ArquivoDismember
 {
-	protected void readAndLoadXML(File arquivo) throws SAXException, IOException, ParserConfigurationException
+	protected void readAndLoadXML(File arquivo, AutomatonDados dados)
 	{
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = dbf.newDocumentBuilder();
-		Document jflap = db.parse(arquivo.toString()); // recebe o endereço do arquivo
+		DocumentBuilder db = null;
+		try
+		{
+			db = dbf.newDocumentBuilder();
+		} catch (ParserConfigurationException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Algo inesperado ocorreu verifique o arquivo que está tentando abrir. Encerrando.");
+			System.exit(1);
+		}
+		Document jflap = null;
+		try
+		{
+			jflap = db.parse(arquivo.toString()); // recebe o endereço do arquivo
+		} catch (SAXException | IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("O arquivo que você tentou abrir, não é um arquivo do jflap. Encerrando.");
+			System.exit(1);
+		} 
 
-		AutomatonDados dados = new AutomatonDados();
+		// AutomatonDados dados = new AutomatonDados();
 		ArrayList<Estado> states = new ArrayList<Estado>();
 		ArrayList<Transicao> transitions = new ArrayList<Transicao>();
 
@@ -40,9 +60,9 @@ public class ArquivoDismember
 				Element elementoEstado = (Element) noEstado;
 				Estado estados = new Estado();
 				estados.setId(Integer.parseInt(elementoEstado.getAttribute("id")));
-				System.out.println("id: " + estados.getId());
+				// System.out.println("id: " + estados.getId());
 				estados.setNome(elementoEstado.getAttribute("name"));
-				System.out.println("nome: " + estados.getNome());
+				// System.out.println("nome: " + estados.getNome());
 
 				NodeList listaFilhosEstado = elementoEstado.getChildNodes();
 
@@ -62,19 +82,19 @@ public class ArquivoDismember
 						{
 						case "x":
 							estados.setCoordenaX(Double.parseDouble(elementoFilhoEstado.getTextContent()));
-							System.out.println("x: " + estados.getCoordenaX());
+							// System.out.println("x: " + estados.getCoordenaX());
 							break;
 						case "y":
 							estados.setCoordenaY(Double.parseDouble(elementoFilhoEstado.getTextContent()));
-							System.out.println("y: " + estados.getCoordenaY());
+							// System.out.println("y: " + estados.getCoordenaY());
 							break;
 						case "initial":
 							estados.setInicial(true);
-							System.out.println("isInicial: " + estados.isInicial());
+							// System.out.println("isInicial: " + estados.isInicial());
 							break;
 						case "final":
 							estados.setFinal(true);
-							System.out.println("isFinal: " + estados.isFinal());
+							// System.out.println("isFinal: " + estados.isFinal());
 							break;
 						}
 					}
@@ -115,15 +135,15 @@ public class ArquivoDismember
 						{
 						case "from":
 							transicoes.setOrigem(Integer.parseInt(elementoFilhoTrans.getTextContent()));
-							System.out.println("from: " + transicoes.getOrigem());
+							// System.out.println("from: " + transicoes.getOrigem());
 							break;
 						case "to":
 							transicoes.setDestino(Integer.parseInt(elementoFilhoTrans.getTextContent()));
-							System.out.println("to: " + transicoes.getDestino());
+							// System.out.println("to: " + transicoes.getDestino());
 							break;
 						case "read":
 							transicoes.setSimbolLeitura(elementoFilhoTrans.getTextContent());
-							System.out.println("read: " + transicoes.getSimbolLeitura());
+							// System.out.println("read: " + transicoes.getSimbolLeitura());
 							break;
 						}
 					}

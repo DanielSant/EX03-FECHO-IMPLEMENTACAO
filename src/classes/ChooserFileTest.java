@@ -1,6 +1,7 @@
 package classes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -19,10 +20,6 @@ public class ChooserFileTest
 		AutomatonDados auto = new AutomatonDados();
 		arq.readAndLoadXML(application.getFile(), auto);
 		
-		for (Estado est : auto.getEstado())
-		{
-			System.out.println(est.getNome());
-		}
 		
 		System.out.printf("%n%s%n", "Abrir o 2º arquivo");
 		ChooserFile app = new ChooserFile();
@@ -30,12 +27,9 @@ public class ChooserFileTest
 		AutomatonDados auto1 = new AutomatonDados();
 		arq1.readAndLoadXML(app.getFile(), auto1);
 		
-		int qtdEstados2 = auto1.getEstado().size();
-		
-		for (int i = 0; i < qtdEstados2; i++)
-		{
-			System.out.println(auto1.getEstado().get(i));
-		}
+		ArrayList<GerarMaquinaFinal> maquinasFinais = new ArrayList<GerarMaquinaFinal>();
+ 		GerarMaquinaFinal result = new GerarMaquinaFinal();
+		result.manipularTransicoes(auto, auto1, maquinasFinais);
 		
 		/*AbrirArquivo arq1 = new AbrirArquivo();
 		arq1.openFile(application.getFile().toString());

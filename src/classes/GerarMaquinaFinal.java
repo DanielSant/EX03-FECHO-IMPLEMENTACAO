@@ -2,36 +2,48 @@ package classes;
 
 import java.util.ArrayList;
 
-public class GerarMaquinaFinal
+public class GerarMaquinaFinal extends Estado
 {
-	private Estado estadosMaqFinal;
-	private Transicao transicoesMaqFinal;
+	private int transMaquinaFinalOrigem;
+	private int transMaquinaFinalDestino;
+	private int idMaquinaFinal;
 	private int transicaoAuto1Origem;
 	private int transicaoAuto2Origem;
 	private int transicaoAuto1Destino;
 	private int transicaoAuto2Destino;
 	private String simboloDeLeitura;
-	private boolean isFinalAnto1AndAuto12;
+	private boolean isFinalAnto1AndAuto2;
 	private boolean readAandB;
+	private String ids;
 
-	public Estado getEstadosMaqFinal()
+	public int getTransMaquinaFinalOrigem()
 	{
-		return estadosMaqFinal;
+		return transMaquinaFinalOrigem;
 	}
 
-	public void setEstadosMaqFinal(Estado estadosMaqFinal)
+	public void setTransMaquinaFinalOrigem(int transMaquinaFinal)
 	{
-		this.estadosMaqFinal = estadosMaqFinal;
+		this.transMaquinaFinalOrigem = transMaquinaFinal;
 	}
 
-	public Transicao getTransicoesMaqFinal()
+	public int getTransMaquinaFinalDestino()
 	{
-		return transicoesMaqFinal;
+		return transMaquinaFinalDestino;
 	}
 
-	public void setTransicoesMaqFinal(Transicao transicoesMaqFinal)
+	public void setTransMaquinaFinalDestino(int transMaquinaFinalDestino)
 	{
-		this.transicoesMaqFinal = transicoesMaqFinal;
+		this.transMaquinaFinalDestino = transMaquinaFinalDestino;
+	}
+
+	public int getIdMaquinaFinal()
+	{
+		return idMaquinaFinal;
+	}
+
+	public void setIdMaquinaFinal(int idMaquinaFinal)
+	{
+		this.idMaquinaFinal = idMaquinaFinal;
 	}
 
 	public int getTransicaoAuto1Origem()
@@ -84,14 +96,14 @@ public class GerarMaquinaFinal
 		this.simboloDeLeitura = simboloDeLeitura;
 	}
 
-	public boolean isFinalAnto1AndAuto12()
+	public boolean isFinalAnto1AndAuto2()
 	{
-		return isFinalAnto1AndAuto12;
+		return isFinalAnto1AndAuto2;
 	}
 
-	public void setFinalAnto1AndAuto12(boolean isFinalAnto1AndAuto12)
+	public void setFinalAnto1AndAuto2(boolean isFinalAnto1AndAuto2)
 	{
-		this.isFinalAnto1AndAuto12 = isFinalAnto1AndAuto12;
+		this.isFinalAnto1AndAuto2 = isFinalAnto1AndAuto2;
 	}
 
 	public boolean isReadAandB()
@@ -104,49 +116,100 @@ public class GerarMaquinaFinal
 		this.readAandB = readAandB;
 	}
 
-	public void manipularTransicoes(AutomatonDados dadosAuto1, AutomatonDados dadosAuto2, AutomatonDados maquinaFinal)
+	public String getIds()
 	{
-		ArrayList<GerarMaquinaFinal> MaqFinal = new ArrayList<GerarMaquinaFinal>();
-		int contParaIds = 0;
-		int contParaIdsInicialAux = 0; // usar no auto2 para ficar a informações no mesmo id
-		int contParaIdsFinalAux = 0; // usar no auto2 para ficar a informações no mesmo id
-		
-		// for() para pegar os estados iniciais e final do auto1 e setar para o da maquinaresultante.
+		return ids;
+	}
+
+	public void setIds(String ids)
+	{
+		this.ids = ids;
+	}
+
+	public void manipularTransicoes(AutomatonDados dadosAuto1, AutomatonDados dadosAuto2, ArrayList<GerarMaquinaFinal> maqFinal)
+	{
+		GerarMaquinaFinal maquinaLast;
+		// for's() Gerar os estados da maquinaFinal
+		int ids = 0;
 		for (Estado estAuto1 : dadosAuto1.getEstado())
 		{
-			if (estAuto1.isInicial())
+			for (Estado estAuto2 : dadosAuto2.getEstado())
 			{
-				estadosMaqFinal.setId(contParaIds);
-				contParaIdsInicialAux = contParaIds;
-				setTransicaoAuto1Origem(estAuto1.getId());
-				System.out.println(estAuto1.getId());
-				estadosMaqFinal.setNome(estAuto1.getNome());
-				System.out.println(estAuto1.getNome());
-				estadosMaqFinal.setInicial(true);
-				
-				contParaIds++;
-			}
-			
-			if (estAuto1.isFinal())
-			{
-				estadosMaqFinal.setId(contParaIds);
-				setTransicaoAuto1Origem(estAuto1.getId());
-			}
-		} // fim do for() para o auto1 
+				maquinaLast = new GerarMaquinaFinal();
+				maquinaLast.setIdMaquinaFinal(ids++);
+				maquinaLast.setIds(estAuto1.getId() + "," + estAuto2.getId());
+				maquinaLast.setNome(estAuto1.getNome() + "," + estAuto2.getNome());
+				maquinaLast.setCoordenaX(estAuto1.getCoordenaX() + estAuto2.getCoordenaX());
+				maquinaLast.setCoordenaY(estAuto1.getCoordenaY() + estAuto2.getCoordenaY());
+
+				if (estAuto1.isInicial() && estAuto2.isInicial())
+				{
+					maquinaLast.setInicial(true);
+					maquinaLast.setTransicaoAuto1Origem(estAuto1.getId());
+					maquinaLast.setTransicaoAuto2Origem(estAuto2.getId());
+				}
+
+				if (estAuto1.isFinal() || estAuto2.isFinal())
+					maquinaLast.setFinal(true);
+
+				if (estAuto1.isFinal() && estAuto2.isFinal())
+					maquinaLast.setFinalAnto1AndAuto2(true);
+
+				maqFinal.add(maquinaLast);
+			} // fim for() auto2
+		} // fim for() auot1
 		
-		// for() para pegar os estados iniciais e final do auto2 e setar para o da maquinaresultante.
-		for (Estado estAuto2 : dadosAuto2.getEstado())
+		ArrayList<GerarMaquinaFinal> transicoes = new ArrayList<GerarMaquinaFinal>();
+		for (Transicao transAuto1 : dadosAuto1.transicao)
 		{
-			if (estAuto2.isInicial())
+			for (Transicao transAuto2 : dadosAuto2.transicao)
 			{
-				setTransicaoAuto1Origem(estAuto2.getId());
-				System.out.println(estAuto2.getId());
-				estadosMaqFinal.setNome(estadosMaqFinal.getNome() + "," + estAuto2.getNome());
-				System.out.println(estAuto2.getNome());
-				estadosMaqFinal.setInicial(true);						
+				if (transAuto1.getSimbolLeitura().equals(transAuto2.getSimbolLeitura()))
+				{
+					GerarMaquinaFinal aux = new GerarMaquinaFinal();
+					aux.setIds(transAuto1.getOrigem() + "," + transAuto2.getOrigem());
+					for (GerarMaquinaFinal trans : maqFinal)
+					{
+						if (trans.getIds().equals(aux.getIds())) // origem
+						{
+							aux.setTransMaquinaFinalOrigem(trans.idMaquinaFinal);
+						}
+					}
+					
+					aux.setIds(transAuto1.getDestino() + "," + transAuto2.getDestino());
+					for (GerarMaquinaFinal trans : maqFinal)
+					{
+						if (trans.getIds().equals(aux.getIds())) // destino
+						{
+							aux.setTransMaquinaFinalDestino(trans.getIdMaquinaFinal());
+							aux.setSimboloDeLeitura(transAuto1.getSimbolLeitura());
+						}
+					}
+					transicoes.add(aux);
+				}
 			}
-		} // fim do for() para o auto2
-	
+		}
+		
+		for (GerarMaquinaFinal imprimir : maqFinal)
+		{
+			System.out.println(imprimir.getIdMaquinaFinal());
+			System.out.println(imprimir.getIds());
+			System.out.println(imprimir.getNome());
+			System.out.println(imprimir.getCoordenaX());
+			System.out.println(imprimir.getCoordenaY());
+			System.out.println(imprimir.isInicial());
+			System.out.println(imprimir.isFinal());
+			System.out.println(imprimir.isFinalAnto1AndAuto2());
+			
+		}
+		System.out.println("Trasicoes");
+		for (GerarMaquinaFinal print : transicoes)
+		{
+			System.out.println(print.getTransMaquinaFinalOrigem());
+			System.out.println(print.getSimboloDeLeitura());
+			System.out.println(print.getTransMaquinaFinalDestino());
+		}
+
 	} // fim do método manipularTransicoes();
 
 } // fim da classe GerarMaquinaFinal;

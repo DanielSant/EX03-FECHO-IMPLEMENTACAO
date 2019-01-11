@@ -126,7 +126,8 @@ public class GerarMaquinaFinal extends Estado
 		this.ids = ids;
 	}
 
-	public void manipularTransicoes(AutomatonDados dadosAuto1, AutomatonDados dadosAuto2, ArrayList<GerarMaquinaFinal> maqFinal)
+	public void manipularTransicoes(AutomatonDados dadosAuto1, AutomatonDados dadosAuto2,
+			ArrayList<GerarMaquinaFinal> maqFinal, ArrayList<GerarMaquinaFinal> transicoes)
 	{
 		GerarMaquinaFinal maquinaLast;
 		// for's() Gerar os estados da maquinaFinal
@@ -157,9 +158,9 @@ public class GerarMaquinaFinal extends Estado
 
 				maqFinal.add(maquinaLast);
 			} // fim for() auto2
-		} // fim for() auot1
-		
-		ArrayList<GerarMaquinaFinal> transicoes = new ArrayList<GerarMaquinaFinal>();
+		} // fim for() auto1
+
+		// for() para pegar as transições
 		for (Transicao transAuto1 : dadosAuto1.transicao)
 		{
 			for (Transicao transAuto2 : dadosAuto2.transicao)
@@ -171,11 +172,9 @@ public class GerarMaquinaFinal extends Estado
 					for (GerarMaquinaFinal trans : maqFinal)
 					{
 						if (trans.getIds().equals(aux.getIds())) // origem
-						{
 							aux.setTransMaquinaFinalOrigem(trans.idMaquinaFinal);
-						}
 					}
-					
+
 					aux.setIds(transAuto1.getDestino() + "," + transAuto2.getDestino());
 					for (GerarMaquinaFinal trans : maqFinal)
 					{
@@ -187,9 +186,52 @@ public class GerarMaquinaFinal extends Estado
 					}
 					transicoes.add(aux);
 				}
+			} // fim do for() auto2
+		} // fim do for() auto1
+
+		// retirar os estados sem transições
+		ArrayList<GerarMaquinaFinal> auxEstado = new ArrayList<GerarMaquinaFinal>();
+		ArrayList<GerarMaquinaFinal> auxTransi = new ArrayList<GerarMaquinaFinal>();
+		GerarMaquinaFinal p = new GerarMaquinaFinal();
+		for (int i = 0; i < maqFinal.size(); i++)
+		{
+			int cont = 0;
+			for (int j = 0; j < transicoes.size(); j++)
+			{
+				if ((maqFinal.get(i).getIdMaquinaFinal() == transicoes.get(j).getTransMaquinaFinalDestino()) || maqFinal.get(i).getIdMaquinaFinal() == 0)
+					continue;
+				
+				cont++;
+				if (cont >= (transicoes.size()-1))
+				{
+					cont = 0;
+					System.out.println("id Estado maqFinal: " + maqFinal.get(i).getIdMaquinaFinal());
+					p = maqFinal.get(i);
+					auxEstado.add(p);
+				}
 			}
 		}
 		
+		for (GerarMaquinaFinal otimize : auxEstado)
+			maqFinal.remove(otimize);
+		
+		GerarMaquinaFinal y = new GerarMaquinaFinal();
+		for (int i = 0; i < transicoes.size(); i++)
+		{
+			for (int j = 0; j < maqFinal.size(); j++)
+			{
+				if (transicoes.get(i).getTransMaquinaFinalOrigem() == maqFinal.get(j).getIdMaquinaFinal())
+				{
+					y = transicoes.get(i);
+					auxTransi.add(y);
+				}
+			}
+		}
+		transicoes.clear();
+		
+		for (GerarMaquinaFinal otimize : auxTransi)
+			transicoes.add(otimize);
+
 		for (GerarMaquinaFinal imprimir : maqFinal)
 		{
 			System.out.println(imprimir.getIdMaquinaFinal());
@@ -200,14 +242,15 @@ public class GerarMaquinaFinal extends Estado
 			System.out.println(imprimir.isInicial());
 			System.out.println(imprimir.isFinal());
 			System.out.println(imprimir.isFinalAnto1AndAuto2());
-			
+
 		}
-		System.out.println("Trasicoes");
+		System.out.println("Estados a serem excluídos");
 		for (GerarMaquinaFinal print : transicoes)
 		{
-			System.out.println(print.getTransMaquinaFinalOrigem());
-			System.out.println(print.getSimboloDeLeitura());
-			System.out.println(print.getTransMaquinaFinalDestino());
+			System.out.print(print.getTransMaquinaFinalOrigem());
+			System.out.print(print.getSimboloDeLeitura());
+			System.out.print(print.getTransMaquinaFinalDestino());
+			System.out.println();
 		}
 
 	} // fim do método manipularTransicoes();

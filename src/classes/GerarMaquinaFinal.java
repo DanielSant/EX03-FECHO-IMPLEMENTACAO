@@ -198,23 +198,23 @@ public class GerarMaquinaFinal extends Estado
 			int cont = 0;
 			for (int j = 0; j < transicoes.size(); j++)
 			{
-				if ((maqFinal.get(i).getIdMaquinaFinal() == transicoes.get(j).getTransMaquinaFinalDestino()) || maqFinal.get(i).getIdMaquinaFinal() == 0)
+				if ((maqFinal.get(i).getIdMaquinaFinal() == transicoes.get(j).getTransMaquinaFinalDestino())
+						|| maqFinal.get(i).getIdMaquinaFinal() == 0)
 					continue;
-				
+
 				cont++;
-				if (cont >= (transicoes.size()-1))
+				if (cont >= (transicoes.size() - 1))
 				{
 					cont = 0;
-					System.out.println("id Estado maqFinal: " + maqFinal.get(i).getIdMaquinaFinal());
 					p = maqFinal.get(i);
 					auxEstado.add(p);
 				}
 			}
 		}
-		
+
 		for (GerarMaquinaFinal otimize : auxEstado)
 			maqFinal.remove(otimize);
-		
+
 		GerarMaquinaFinal y = new GerarMaquinaFinal();
 		for (int i = 0; i < transicoes.size(); i++)
 		{
@@ -228,30 +228,9 @@ public class GerarMaquinaFinal extends Estado
 			}
 		}
 		transicoes.clear();
-		
+
 		for (GerarMaquinaFinal otimize : auxTransi)
 			transicoes.add(otimize);
-
-		for (GerarMaquinaFinal imprimir : maqFinal)
-		{
-			System.out.println(imprimir.getIdMaquinaFinal());
-			System.out.println(imprimir.getIds());
-			System.out.println(imprimir.getNome());
-			System.out.println(imprimir.getCoordenaX());
-			System.out.println(imprimir.getCoordenaY());
-			System.out.println(imprimir.isInicial());
-			System.out.println(imprimir.isFinal());
-			System.out.println(imprimir.isFinalAnto1AndAuto2());
-
-		}
-		System.out.println("Estados a serem excluídos");
-		for (GerarMaquinaFinal print : transicoes)
-		{
-			System.out.print(print.getTransMaquinaFinalOrigem());
-			System.out.print(print.getSimboloDeLeitura());
-			System.out.print(print.getTransMaquinaFinalDestino());
-			System.out.println();
-		}
 
 	} // fim do método manipularTransicoes();
 

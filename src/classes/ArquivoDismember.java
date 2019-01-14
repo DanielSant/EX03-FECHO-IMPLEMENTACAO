@@ -36,11 +36,10 @@ public class ArquivoDismember
 			jflap = db.parse(arquivo.toString()); // recebe o endereço do arquivo
 		} catch (SAXException | IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("O arquivo que você tentou abrir, não é um arquivo do jflap. Encerrando.");
 			System.exit(1);
-		} 
+		}
 
 		// AutomatonDados dados = new AutomatonDados();
 		ArrayList<Estado> states = new ArrayList<Estado>();
@@ -60,9 +59,7 @@ public class ArquivoDismember
 				Element elementoEstado = (Element) noEstado;
 				Estado estados = new Estado();
 				estados.setId(Integer.parseInt(elementoEstado.getAttribute("id")));
-				// System.out.println("id: " + estados.getId());
 				estados.setNome(elementoEstado.getAttribute("name"));
-				// System.out.println("nome: " + estados.getNome());
 
 				NodeList listaFilhosEstado = elementoEstado.getChildNodes();
 
@@ -82,19 +79,15 @@ public class ArquivoDismember
 						{
 						case "x":
 							estados.setCoordenaX(Double.parseDouble(elementoFilhoEstado.getTextContent()));
-							// System.out.println("x: " + estados.getCoordenaX());
 							break;
 						case "y":
 							estados.setCoordenaY(Double.parseDouble(elementoFilhoEstado.getTextContent()));
-							// System.out.println("y: " + estados.getCoordenaY());
 							break;
 						case "initial":
 							estados.setInicial(true);
-							// System.out.println("isInicial: " + estados.isInicial());
 							break;
 						case "final":
 							estados.setFinal(true);
-							// System.out.println("isFinal: " + estados.isFinal());
 							break;
 						}
 					}
@@ -135,15 +128,12 @@ public class ArquivoDismember
 						{
 						case "from":
 							transicoes.setOrigem(Integer.parseInt(elementoFilhoTrans.getTextContent()));
-							// System.out.println("from: " + transicoes.getOrigem());
 							break;
 						case "to":
 							transicoes.setDestino(Integer.parseInt(elementoFilhoTrans.getTextContent()));
-							// System.out.println("to: " + transicoes.getDestino());
 							break;
 						case "read":
 							transicoes.setSimbolLeitura(elementoFilhoTrans.getTextContent());
-							// System.out.println("read: " + transicoes.getSimbolLeitura());
 							break;
 						}
 					}

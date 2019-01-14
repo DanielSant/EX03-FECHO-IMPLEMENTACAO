@@ -7,7 +7,6 @@ public class Estado
 	private int id;
 	private boolean isInicial;
 	private boolean isFinal;
-	// private boolean leuAeB;
 	private double coordenaX;
 	private double coordenaY;
 
